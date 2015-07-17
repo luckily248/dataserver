@@ -19,8 +19,8 @@ func (c *AddressResBodyController) URLMapping() {
 	c.Mapping("Delete", c.Delete)
 }
 
-// @Title Post
-// @Description create AddressResBody
+// @Title Post (NOT USE)
+// @Description create AddressResBody (not use)
 // @Param	body		body 	models.AddressResBody	true		"body for AddressResBody content"
 // @Success 200 {int} models.AddressResBody.Id
 // @Failure 403 body is empty
@@ -32,7 +32,7 @@ func (c *AddressResBodyController) Post() {
 // @Title Get
 // @Description get AddressResBody by id
 // @Param	id		path 	string	true		"The key for cityid"
-// @Success 200 {AddressResBody} models.AddressResBody
+// @Success 200 {object} models.AddressResBody
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *AddressResBodyController) GetOne() {
@@ -52,8 +52,8 @@ func (c *AddressResBodyController) GetOne() {
 	c.ServeJson()
 }
 
-// @Title Get All
-// @Description get AddressResBody
+// @Title Get All (NOT USE)
+// @Description get AddressResBody (not use)
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
 // @Param	fields	query	string	false	"Fields returned. e.g. col1,col2 ..."
 // @Param	sortby	query	string	false	"Sorted-by fields. e.g. col1,col2 ..."
@@ -67,8 +67,8 @@ func (c *AddressResBodyController) GetAll() {
 
 }
 
-// @Title Update
-// @Description update the AddressResBody
+// @Title Update (NOT USE)
+// @Description update the AddressResBody (not use)
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	models.AddressResBody	true		"body for AddressResBody content"
 // @Success 200 {object} models.AddressResBody
@@ -78,8 +78,8 @@ func (c *AddressResBodyController) Put() {
 
 }
 
-// @Title Delete
-// @Description delete the AddressResBody
+// @Title Delete (NOT USE)
+// @Description delete the AddressResBody (not use)
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
