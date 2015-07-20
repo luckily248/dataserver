@@ -13,6 +13,7 @@
 	1. 配置conf/app.conf 修改httpport 默认为8888
 	2. 配置conf/cityid.json 按格式修改需要采集的城市 已有默认数据
 	3. 新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
+	4. 新建命令行窗口 进入项目目录 运行 bee run -downdoc=true -gendoc=true
 	4. 打开浏览器打开文档地址 查询API信息 e.g. http://127.0.0.1:8888/swagger/swagger-1/
 
 >     RUN TestApi-4
