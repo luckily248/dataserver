@@ -60,7 +60,8 @@
 	1. 数据库使用 
 		1. C#开发指南 https://docs.mongodb.org/getting-started/csharp/client/
 		2. 驱动包 CSharpDriver-2.0.1.zip
-	1. 
+	1. GO开发环境配置
+		1.解压go主程序 添加目录下/bin到环境变量gopath中 
 2. 风险
 	1. mongoDB数据库中 32位系统最高可用2G内存
 	2. mongoDB数据库中 windows系统最高8T linux系统最高128T
