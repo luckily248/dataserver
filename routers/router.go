@@ -14,10 +14,10 @@ import (
 )
 
 func init() {
-	ns := beego.NewNamespace("/v1",
-		beego.NSNamespace("/addressresbody",
+	ns := beego.NewNamespace("/v1", //v1 :版本号
+		beego.NSNamespace("/weather", //天气API  e.g. http://127.0.0.1:8888/v1/weather/:id
 			beego.NSInclude(
-				&controllers.AddressResBodyController{},
+				&controllers.ShowWeatherController{},
 			),
 		),
 	)

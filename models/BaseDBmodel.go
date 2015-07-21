@@ -16,9 +16,11 @@ func (this *BaseDBmodel) DBname() string {
 }
 
 func (this *BaseDBmodel) init() {
-	newsession, err := mgo.Dial("")
+	//mongodburl := beego.AppConfig.String("mongodburl")
+	//log.Printf("mgourl:%s\n", mongodburl)
+	newsession, err := mgo.Dial("127.0.0.1:27017")
 	if err != nil {
-		log.Fatal("mgo init error")
+		log.Printf("mgo init err:%s\n", err.Error())
 		panic(err)
 	}
 	this.session = newsession
