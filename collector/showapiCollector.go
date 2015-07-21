@@ -66,25 +66,15 @@ func Run() {
 }
 
 //循环采集
-<<<<<<< Updated upstream
+
 func loop() {
-	wcollectortimer := time.NewTimer(time.Hour)
+	wcollectortimer := time.NewTimer(time.Minute)
 	for {
 		select {
-		case <-wcollectortimer.C: //1秒后开始第一次采集
+		case <-wcollectortimer.C: //1分钟后开始第一次采集
 			fmt.Printf("collecting\n")
 			collect()
 			wcollectortimer.Reset(time.Hour * 12) //以后每12小时采集一次
-=======
-func loop(){
-	wcollectortimer:=time.NewTimer(time.Minute)
-	for {
-		select{
-				case <-wcollectortimer.C:  //1分钟后开始第一次采集
-				fmt.Printf("collecting\n")
-				collect()
-				wcollectortimer.Reset(time.Hour*12)  //以后每12小时采集一次
->>>>>>> Stashed changes
 		}
 	}
 }
