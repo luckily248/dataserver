@@ -32,11 +32,17 @@ func (c *ShowWeatherController) Post() {
 // @Title Get
 // @Description get ShowWeatherModel by id
 // @Param	id		path 	string	true		"The key for cityid"
+<<<<<<< Updated upstream:controllers/ShowWeatherController.go
 // @Success 200 {object} models.ShowWeatherModel
+=======
+// @Success 200 {object} models.AddressResBody
+// @Failure 404  not found
+>>>>>>> Stashed changes:controllers/addressresbody.go
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *ShowWeatherController) GetOne() {
 
+<<<<<<< Updated upstream:controllers/ShowWeatherController.go
 	cityid := c.Ctx.Input.Params[":id"]
 	fmt.Printf("cityid:%s\n", cityid)
 	if cityid != "" {
@@ -44,6 +50,19 @@ func (c *ShowWeatherController) GetOne() {
 		if err != nil {
 			c.Data["json"] = err
 			fmt.Printf("err:%s\n", err.Error())
+=======
+	cityid:= c.Ctx.Input.Params[":id"]
+	fmt.Printf("cityid:%s\n",cityid)
+	if cityid == "" {
+		c.Ctx.Output.SetStatus(403)
+		c.Data["json"]=string("is emty")
+	}else{
+		ob, err := models.GetOneData(cityid)
+		if err != nil {
+			c.Ctx.Output.SetStatus(404)
+			c.Data["json"] = err.Error()
+			fmt.Printf("err:%s\n",err.Error())
+>>>>>>> Stashed changes:controllers/addressresbody.go
 		} else {
 			c.Data["json"] = ob
 			fmt.Printf("ob:%v\n", ob)
