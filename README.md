@@ -132,3 +132,4 @@
 	1. mongoDB数据库中 32位系统最高可用2G内存
 	2. mongoDB数据库中 windows系统最高8T linux系统最高128T
 	3. 目前数据库默认为127.0.0.1:27017
+	4. 如果启动服务器出现 Detected unclean shutdown - E:\MongoDB\Server\3.0\data\mongod.lock is not empty.  说明数据库没正常关闭，需要删除路径中 mongod.lock文件 重新启动
