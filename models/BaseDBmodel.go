@@ -3,6 +3,7 @@ package models
 import (
 	"gopkg.in/mgo.v2"
 	"log"
+	"beego"
 )
 
 type BaseDBmodel struct {
@@ -16,9 +17,8 @@ func (this *BaseDBmodel) DBname() string {
 }
 
 func (this *BaseDBmodel) init() {
-	//mongodburl := beego.AppConfig.String("mongodburl")
-	//log.Printf("mgourl:%s\n", mongodburl)
-	newsession, err := mgo.Dial("127.0.0.1:27017")
+	mgourl:=beego.AppConfig.String("mgourl")
+	newsession, err := mgo.Dial(mgourl)
 	if err != nil {
 		log.Printf("mgo init err:%s\n", err.Error())
 		panic(err)
