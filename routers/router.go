@@ -20,6 +20,11 @@ func init() {
 				&controllers.ShowWeatherController{},
 			),
 		),
+		beego.NSNamespace("/city", //城市id API  e.g. http://127.0.0.1:8888/v1/city/:name
+			beego.NSInclude(
+				&controllers.CityContentController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

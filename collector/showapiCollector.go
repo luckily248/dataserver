@@ -1,17 +1,12 @@
 package collector
 
 import (
-	_ "bytes"
 	. "dataserver/models"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	_ "os"
-	_ "os/exec"
-	_ "path/filepath"
-	_ "strings"
 	"time"
 )
 
@@ -22,46 +17,14 @@ const (
 	addressservice string = "/address"                                               //获取cityid对应天气信息的服务地址
 )
 
-var cityidcontent *citycode //内存驻留cityid列表
 
-//获取json数据建模
-type citycode struct {
-	Cityids []areamodel
-}
 
-type areamodel struct {
-	Area string
-	City []city
-}
 
-type city struct {
-	Cityname string
-	Cityid   string
-}
 
-//初始化cityid列表
-func confInit() (err error) {
-	//fmt.Printf("conf init\n")
-	buf, err := ioutil.ReadFile("./conf/cityid.json") //读取文件
-	if err != nil {
-		return
-	}
-	cityidcontent = &citycode{}
-	err = json.Unmarshal(buf, cityidcontent) //序列化文件为对象
-	if err != nil {
-		return
-	}
-	//fmt.Printf("areamodel:%s\n",cityread.Cityids[0].City[0].Cityid)
-	return
-}
+
 
 //公开方法  运行采集器
 func Run() {
-	//fmt.Printf("collector run\n")
-	err := confInit() //初始化
-	if err != nil {
-		fmt.Printf("collector init error:%s\n", err.Error())
-	}
 	go loop() //开始循环
 }
 
@@ -81,19 +44,24 @@ func loop() {
 
 //开始采集
 func collect() {
-	for i := 0; i < len(cityidcontent.Cityids); i++ {
-		fmt.Printf("begin area %s \n ", cityidcontent.Cityids[i].Area)
-		go collectArea(cityidcontent.Cityids[i])
+	cityidcontent,err :=GetCityContent()
+	if err!=nil{
+		fmt.Printf("getcitycontent err:%s\n",err.Error())
+		return
+	}
+	for i := 0; i < len(cityidcontent.Areas); i++ {
+		fmt.Printf("begin area %s \n ", cityidcontent.Areas[i].Area)
+		go collectArea(cityidcontent.Areas[i])
 	}
 	//fmt.Printf("alldone:%b\n",done)
 }
 
 //采集省级数据
-func collectArea(areamodel areamodel) {
-	for i := 0; i < len(areamodel.City); i++ {
-		fmt.Printf("begin %s \n", areamodel.City[i].Cityname)
-		collectCity(areamodel.City[i].Cityid)
-		fmt.Printf("end %s \n", areamodel.City[i].Cityname)
+func collectArea(area Area) {
+	for i := 0; i < len(area.City); i++ {
+		fmt.Printf("begin %s \n", area.City[i].Cityname)
+		collectCity(area.City[i].Cityid)
+		fmt.Printf("end %s \n", area.City[i].Cityname)
 	}
 }
 
@@ -101,39 +69,43 @@ func collectArea(areamodel areamodel) {
 func collectCity(cityid string) {
 	v2 := url.Values{}
 	v2.Set("areaid", cityid)
-	v2.Set("needMoreDay", "0")
-	v2.Set("needIndex", "0")
+	v2.Set("needMoreDay", "1")
+	v2.Set("needIndex", "1")
 
 	addresstestUrl := fmt.Sprintf("%s%s?%s", servicesUrl, addressservice, v2.Encode())
 	//fmt.Printf("areaidtest:%s\n",addresstestUrl) //输出请求天气预报路径
 
 	req, err := http.NewRequest("GET", addresstestUrl, nil)
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
+		fmt.Printf("request err:%s\n", err.Error())
+		return
 	}
 	req.Header.Set("apikey", apikey)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
+		fmt.Printf("client err:%s\n", err.Error())
+		return
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("bodyread err:%s\n", err.Error())
+		return
 	}
 	//fmt.Printf("resp body:%s\n",string(body))
 
 	addressResp := &AddressResp{}
 	err = json.Unmarshal(body, addressResp)
 	if err != nil {
-		fmt.Printf("jsonerr %s:%s\n", cityid, err.Error())
+		fmt.Printf("json err %s:%s\n", cityid, err.Error())
 		return
 	}
 	err = UpsertData(&addressResp.Showapi_res_body)
 	if err != nil {
 		fmt.Printf("upsert %s fail:%s\n", cityid, err.Error())
+		return
 	}
 	fmt.Printf("upsert %s success\n", cityid)
 }

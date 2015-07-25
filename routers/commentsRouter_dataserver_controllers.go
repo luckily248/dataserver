@@ -6,11 +6,18 @@ import (
 
 func init() {
 	
-	beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"] = append(beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"],
+	beego.GlobalControllerRouter["dataserver/controllers:CityContentController"] = append(beego.GlobalControllerRouter["dataserver/controllers:CityContentController"],
 		beego.ControllerComments{
-			"Post",
-			`/`,
-			[]string{"post"},
+			"GetOneCityContent",
+			`/citycontent`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["dataserver/controllers:CityContentController"] = append(beego.GlobalControllerRouter["dataserver/controllers:CityContentController"],
+		beego.ControllerComments{
+			"GetOneCity",
+			`/:name`,
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"] = append(beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"],
@@ -25,20 +32,6 @@ func init() {
 			"GetAll",
 			`/`,
 			[]string{"get"},
-			nil})
-
-	beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"] = append(beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"],
-		beego.ControllerComments{
-			"Put",
-			`/:id`,
-			[]string{"put"},
-			nil})
-
-	beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"] = append(beego.GlobalControllerRouter["dataserver/controllers:ShowWeatherController"],
-		beego.ControllerComments{
-			"Delete",
-			`/:id`,
-			[]string{"delete"},
 			nil})
 
 }

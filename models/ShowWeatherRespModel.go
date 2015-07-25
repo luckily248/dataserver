@@ -102,22 +102,32 @@ func (this *ShowWeatherModel) Tablename() string {
 	return "addressResBody"
 }
 
-func (this *ShowWeatherModel) init() {
-	this.BaseDBmodel.init()
+func (this *ShowWeatherModel) init() (err error){
+	err = this.BaseDBmodel.init()
+	if err!=nil{
+		return
+	}
 	this.c = this.db.C(this.Tablename())
+	return
 }
 
 func GetOneData(cityid string) (content *ShowWeatherModel, err error) {
 	content = &ShowWeatherModel{}
-	content.init()
+	err=content.init()
+	if err!=nil{
+		return
+	}
 	defer content.session.Close()
 	err = content.c.FindId(cityid).One(&content)
 	return
 }
 
-func UpsertData(content *ShowWeatherModel) error {
-	content.init()
+func UpsertData(content *ShowWeatherModel)(err error) {
+	err =content.init()
+	if err!=nil{
+		return
+	}
 	defer content.session.Close()
-	_, err := content.c.Upsert(bson.M{"_id": content.CityInfo.C1}, &content)
+	_, err = content.c.Upsert(bson.M{"_id": content.CityInfo.C1}, &content)
 	return err
 }

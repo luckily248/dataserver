@@ -2,7 +2,6 @@ package models
 
 import (
 	"gopkg.in/mgo.v2"
-	"log"
 	"beego"
 )
 
@@ -16,14 +15,14 @@ func (this *BaseDBmodel) DBname() string {
 	return "dataserver"
 }
 
-func (this *BaseDBmodel) init() {
+func (this *BaseDBmodel) init() (err error){
 	mgourl:=beego.AppConfig.String("mgourl")
 	newsession, err := mgo.Dial(mgourl)
-	if err != nil {
-		log.Printf("mgo init err:%s\n", err.Error())
-		panic(err)
+	if err!=nil{
+		return
 	}
 	this.session = newsession
 	this.session.SetMode(mgo.Monotonic, true)
 	this.db = this.session.DB(this.DBname())
+	return
 }

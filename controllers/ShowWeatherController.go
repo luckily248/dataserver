@@ -12,22 +12,10 @@ type ShowWeatherController struct {
 }
 
 func (c *ShowWeatherController) URLMapping() {
-	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
-	c.Mapping("Put", c.Put)
-	c.Mapping("Delete", c.Delete)
 }
 
-// @Title Post (NOT USE)
-// @Description create ShowWeatherModel (not use)
-// @Param	body		body 	models.ShowWeatherModel	true		"body for AddressResBody content"
-// @Success 200 {int} models.ShowWeatherModel.Id
-// @Failure 403 body is empty
-// @router / [post]
-func (c *ShowWeatherController) Post() {
-
-}
 
 // @Title Get
 // @Description get ShowWeatherModel by id
@@ -39,10 +27,10 @@ func (c *ShowWeatherController) Post() {
 func (c *ShowWeatherController) GetOne() {
 
 	cityid := c.Ctx.Input.Params[":id"]
-	fmt.Printf("cityid:%s\n", cityid)
+	//fmt.Printf("cityid:%s\n", cityid)
 	if cityid == "" {
 		c.Ctx.Output.SetStatus(403)
-		c.Data["json"] = string("is emty")
+		c.Data["json"] = string("is empty")
 	} else {
 		ob, err := models.GetOneData(cityid)
 		if err != nil {
@@ -72,23 +60,3 @@ func (c *ShowWeatherController) GetAll() {
 
 }
 
-// @Title Update (NOT USE)
-// @Description update the ShowWeatherModel (not use)
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.ShowWeatherModel	true		"body for ShowWeatherModel content"
-// @Success 200 {object} models.ShowWeatherModel
-// @Failure 403 :id is not int
-// @router /:id [put]
-func (c *ShowWeatherController) Put() {
-
-}
-
-// @Title Delete (NOT USE)
-// @Description delete the ShowWeatherModel (not use)
-// @Param	id		path 	string	true		"The id you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 id is empty
-// @router /:id [delete]
-func (c *ShowWeatherController) Delete() {
-
-}
