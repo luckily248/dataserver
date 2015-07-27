@@ -15,6 +15,7 @@ func (this *BaseDBmodel) DBname() string {
 	return "dataserver"
 }
 
+//成功初始化后必须调用  defer this.session.Close()
 func (this *BaseDBmodel) init() (err error){
 	mgourl:=beego.AppConfig.String("mgourl")
 	newsession, err := mgo.Dial(mgourl)
@@ -24,5 +25,14 @@ func (this *BaseDBmodel) init() (err error){
 	this.session = newsession
 	this.session.SetMode(mgo.Monotonic, true)
 	this.db = this.session.DB(this.DBname())
+	return
+}
+
+func (this *BaseDBmodel)Check() (err error){
+	err = this.init()
+	if err!=nil{
+		return
+	}
+	defer this.session.Close()
 	return
 }

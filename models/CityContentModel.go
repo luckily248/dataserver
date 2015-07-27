@@ -26,7 +26,7 @@ type City struct {
 var cityidcontent *citycontent //内存驻留cityid列表
 var mutex sync.Mutex  //互斥锁
 
-func GetcitysInstance()(err error){
+func CheckCitycontentInstance()(err error){
 	mutex.Lock()
 	defer mutex.Unlock()
 	if cityidcontent==nil{
@@ -58,7 +58,7 @@ func GetOneCityid(cityname string) (result City, err error) {
 		err= errors.New("cityname is empty")
 		return
 	}
-	err = GetcitysInstance()
+	err = CheckCitycontentInstance()
 	if err!=nil{
 		return
 	}
@@ -75,7 +75,7 @@ func GetOneCityid(cityname string) (result City, err error) {
 }
 
 func GetCityContent()(result *citycontent,err error){
-	err = GetcitysInstance()
+	err = CheckCitycontentInstance()
 	if err!=nil{
 		return
 	}
