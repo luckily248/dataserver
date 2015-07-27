@@ -55,6 +55,8 @@
 	2. GO开发环境配置
 		1. 解压go主程序 添加目录下/bin到环境变量gopath中
 		2. 新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
+	3. 项目打包发布
+		1. 打开命令行窗口，进入项目目录，输入 bee pack 拷贝到目标服务器 解压即可
 
 >     RUN TestApi-4
 >     PASS: TestApi-4 (0.26s)
