@@ -10,20 +10,12 @@
 	4. 新建命令行窗口 运行后台服务 e.g. E:\MongoDB\Server\3.0\bin>mongod --dbpath E:\MongoDB\Server\3.0\data
 	5. 新建命令行窗口 运行mongo -version 显示版本 则测试通过
 3. 项目配置
-	1. 配置conf/app.conf 修改httpport 默认为8888,runmode 为dev时 需要配置gopath 而需要使用api页面 需要用dev 模式.
+	1. 配置conf/app.conf 
+		2. 修改httpport 默认为8888,runmode 为dev时 需要配置gopath 而需要使用api页面 需要用dev 模式.
+		3. 修改AdminHttpPort 默认为8038
 	2. 配置conf/cityid.json 按格式修改需要采集的城市 已有默认数据
-	3. 新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
+	3. 打开浏览器进入管理页面 查询服务器状态 e.g. http://127.0.0.1:8038/healthcheck
 	4. 打开浏览器打开文档地址 查询API信息 e.g. http://127.0.0.1:8888/swagger/swagger-1/
-
->     RUN TestApi-4
->     PASS: TestApi-4 (0.26s)
->     default_test.go:255: areaidtest:http://apis.baidu.com/showapi_open_bus/weather_showapi/address?areaid=101010100&needIndex=1&needMoreDay=1
->     default_test.go:281: addressResp:北京
->     default_test.go:282: addressResp index:白天光线弱不需要佩戴太阳镜
->     RUN TestUpsert-4
->     PASS: TestUpsert-4 (4.07s)
->     default_test.go:290: content _id:101280101
->     default_test.go:299: content get _id:37%.
 
 
 ##开发文档
@@ -62,6 +54,18 @@
 		2. 驱动包 CSharpDriver-2.0.1.zip
 	1. GO开发环境配置
 		1.解压go主程序 添加目录下/bin到环境变量gopath中 
+	1.新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
+
+>     RUN TestApi-4
+>     PASS: TestApi-4 (0.26s)
+>     default_test.go:255: areaidtest:http://apis.baidu.com/showapi_open_bus/weather_showapi/address?areaid=101010100&needIndex=1&needMoreDay=1
+>     default_test.go:281: addressResp:北京
+>     default_test.go:282: addressResp index:白天光线弱不需要佩戴太阳镜
+>     RUN TestUpsert-4
+>     PASS: TestUpsert-4 (4.07s)
+>     default_test.go:290: content _id:101280101
+>     default_test.go:299: content get _id:37%.
+
 2. 风险
 	1. mongoDB数据库中 32位系统最高可用2G内存
 	2. mongoDB数据库中 windows系统最高8T linux系统最高128T
