@@ -11,11 +11,11 @@
 	5. 新建命令行窗口 运行mongo -version 显示版本 则测试通过
 3. 项目配置
 	1. 配置conf/app.conf 
-		2. 修改httpport 默认为8888,runmode 为dev时 需要配置gopath 而需要使用api页面 需要用dev 模式.
+		2. 修改httpport 默认为8888,runmode 为dev时 需要配置gopath（参考下面章节 go开发环境配置） 而需要使用api页面 需要用dev 模式.
 		3. 修改AdminHttpPort 默认为8038
 	2. 配置conf/cityid.json 按格式修改需要采集的城市 已有默认数据
 	3. 打开浏览器进入管理页面 查询服务器状态 e.g. http://127.0.0.1:8038/healthcheck
-	4. 打开浏览器打开文档地址 查询API信息 e.g. http://127.0.0.1:8888/swagger/swagger-1/
+	4. 打开浏览器打开文档地址 查询API信息 e.g. http://127.0.0.1:8888/swagger/swagger-1/ (需要dev模式)
 
 
 ##开发文档
@@ -52,9 +52,9 @@
 	1. 数据库使用 
 		1. C#开发指南 https://docs.mongodb.org/getting-started/csharp/client/
 		2. 驱动包 CSharpDriver-2.0.1.zip
-	1. GO开发环境配置
-		1.解压go主程序 添加目录下/bin到环境变量gopath中 
-	1.新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
+	2. GO开发环境配置
+		1. 解压go主程序 添加目录下/bin到环境变量gopath中
+		2. 新建命令行窗口 进入项目中 tests目录 运行 go test default_test.go -v 如下图则测试通过
 
 >     RUN TestApi-4
 >     PASS: TestApi-4 (0.26s)
