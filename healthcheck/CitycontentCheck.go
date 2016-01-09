@@ -1,13 +1,12 @@
 package healthcheck
 
-import(
-	"dataserver/models"
+import (
+	"../models"
 )
 
-type CitycontentCheck struct{
-	
+type CitycontentCheck struct {
 }
 
-func (cc *CitycontentCheck)Check()error{
+func (cc *CitycontentCheck) Check() error {
 	return models.CheckCitycontentInstance()
 }
