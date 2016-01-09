@@ -1,14 +1,13 @@
 package healthcheck
 
-import(
-	"dataserver/models"
+import (
+	"../models"
 )
 
-type DatabaseCheck struct{
-	
+type DatabaseCheck struct {
 }
 
-func (dbc *DatabaseCheck)Check()error{
+func (dbc *DatabaseCheck) Check() error {
 	database := &models.BaseDBmodel{}
 	return database.Check()
 }

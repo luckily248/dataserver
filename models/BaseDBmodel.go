@@ -1,8 +1,8 @@
 package models
 
 import (
+	"github.com/astaxie/beego"
 	"gopkg.in/mgo.v2"
-	"beego"
 )
 
 type BaseDBmodel struct {
@@ -16,10 +16,10 @@ func (this *BaseDBmodel) DBname() string {
 }
 
 //成功初始化后必须调用  defer this.session.Close()
-func (this *BaseDBmodel) init() (err error){
-	mgourl:=beego.AppConfig.String("mgourl")
+func (this *BaseDBmodel) init() (err error) {
+	mgourl := beego.AppConfig.String("mgourl")
 	newsession, err := mgo.Dial(mgourl)
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	this.session = newsession
@@ -28,9 +28,9 @@ func (this *BaseDBmodel) init() (err error){
 	return
 }
 
-func (this *BaseDBmodel)Check() (err error){
+func (this *BaseDBmodel) Check() (err error) {
 	err = this.init()
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	defer this.session.Close()

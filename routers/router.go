@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"dataserver/controllers"
+	"../controllers"
 
 	"github.com/astaxie/beego"
 )

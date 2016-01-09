@@ -1,12 +1,12 @@
 package main
 
 import (
-	_ "dataserver/docs"
-	_ "dataserver/routers"
+	"./collector"
+	_ "./docs"
+	"./healthcheck"
+	_ "./routers"
 	"github.com/astaxie/beego"
-	"dataserver/collector"
 	"github.com/astaxie/beego/toolbox"
-	"dataserver/healthcheck"
 )
 
 func main() {
@@ -14,8 +14,8 @@ func main() {
 		beego.DirectoryIndex = true
 		beego.StaticDir["/swagger"] = "swagger"
 	}
-	toolbox.AddHealthCheck("database",&healthcheck.DatabaseCheck{})
-	toolbox.AddHealthCheck("citycontent",&healthcheck.CitycontentCheck{})
+	toolbox.AddHealthCheck("database", &healthcheck.DatabaseCheck{})
+	toolbox.AddHealthCheck("citycontent", &healthcheck.CitycontentCheck{})
 	collector.Run()
 	beego.Run()
 }

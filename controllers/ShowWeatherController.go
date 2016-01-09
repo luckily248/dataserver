@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"dataserver/models"
+	"../models"
 	"fmt"
 	"github.com/astaxie/beego"
 )
@@ -15,7 +15,6 @@ func (c *ShowWeatherController) URLMapping() {
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
 }
-
 
 // @Title Get
 // @Description get ShowWeatherModel by id
@@ -59,4 +58,3 @@ func (c *ShowWeatherController) GetOne() {
 func (c *ShowWeatherController) GetAll() {
 
 }
-

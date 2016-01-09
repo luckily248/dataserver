@@ -1,7 +1,7 @@
 package collector
 
 import (
-	. "dataserver/models"
+	. "../models"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -16,12 +16,6 @@ const (
 	areaidService  string = "/areaid"                                                //获取名字对应cityid服务地址
 	addressservice string = "/address"                                               //获取cityid对应天气信息的服务地址
 )
-
-
-
-
-
-
 
 //公开方法  运行采集器
 func Run() {
@@ -44,9 +38,9 @@ func loop() {
 
 //开始采集
 func collect() {
-	cityidcontent,err :=GetCityContent()
-	if err!=nil{
-		fmt.Printf("getcitycontent err:%s\n",err.Error())
+	cityidcontent, err := GetCityContent()
+	if err != nil {
+		fmt.Printf("getcitycontent err:%s\n", err.Error())
 		return
 	}
 	for i := 0; i < len(cityidcontent.Areas); i++ {
