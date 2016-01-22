@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"../models"
+	"dataserver/models"
 	"fmt"
+
 	"github.com/astaxie/beego"
 )
 

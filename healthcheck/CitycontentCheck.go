@@ -1,7 +1,7 @@
 package healthcheck
 
 import (
-	"../models"
+	"dataserver/models"
 )
 
 type CitycontentCheck struct {

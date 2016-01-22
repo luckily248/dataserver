@@ -1,7 +1,7 @@
 package collector
 
 import (
-	. "../models"
+	. "dataserver/models"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
