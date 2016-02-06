@@ -25,6 +25,11 @@ func init() {
 				&controllers.CityContentController{},
 			),
 		),
+		beego.NSNamespace("/cocserver", //cocserver API  e.g. http://127.0.0.1:8888/v1/cocserver/:warid
+			beego.NSInclude(
+				&controllers.WarDataController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

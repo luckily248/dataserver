@@ -102,9 +102,9 @@ func (this *ShowWeatherModel) Tablename() string {
 	return "addressResBody"
 }
 
-func (this *ShowWeatherModel) init() (err error){
+func (this *ShowWeatherModel) init() (err error) {
 	err = this.BaseDBmodel.init()
-	if err!=nil{
+	if err != nil {
 		return
 	}
 	this.c = this.db.C(this.Tablename())
@@ -113,8 +113,8 @@ func (this *ShowWeatherModel) init() (err error){
 
 func GetOneData(cityid string) (content *ShowWeatherModel, err error) {
 	content = &ShowWeatherModel{}
-	err=content.init()
-	if err!=nil{
+	err = content.init()
+	if err != nil {
 		return
 	}
 	defer content.session.Close()
@@ -122,9 +122,9 @@ func GetOneData(cityid string) (content *ShowWeatherModel, err error) {
 	return
 }
 
-func UpsertData(content *ShowWeatherModel)(err error) {
-	err =content.init()
-	if err!=nil{
+func UpsertData(content *ShowWeatherModel) (err error) {
+	err = content.init()
+	if err != nil {
 		return
 	}
 	defer content.session.Close()

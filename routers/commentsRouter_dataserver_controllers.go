@@ -34,4 +34,18 @@ func init() {
 			[]string{"get"},
 			nil})
 
+	beego.GlobalControllerRouter["dataserver/controllers:WarDataController"] = append(beego.GlobalControllerRouter["dataserver/controllers:WarDataController"],
+		beego.ControllerComments{
+			"NewWar",
+			`/newwar`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["dataserver/controllers:WarDataController"] = append(beego.GlobalControllerRouter["dataserver/controllers:WarDataController"],
+		beego.ControllerComments{
+			"GetWar",
+			`/:clanname`,
+			[]string{"get"},
+			nil})
+
 }
