@@ -1,13 +1,19 @@
 package controllers
 
 import (
+	"bytes"
+	"dataserver/handler"
 	"dataserver/models"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
 
 	"github.com/astaxie/beego"
 )
 
-// get weather information
+// get wardata
 type WarDataController struct {
 	beego.Controller
 }
@@ -53,8 +59,7 @@ func (c *WarDataController) NewWar() {
 
 // @Title Get
 // @Description get WarDataModel by clanname
-// @Param	TeamA		form 	string	true		"new war TeamA"
-// @Param	TeamB		form 	string	true		"new war TeamB"
+// @Param	clanname		path 	string	true		"The key for clan"
 // @Success 200 {object} models.WarDataModel
 // @Failure 404  not found
 // @Failure 403 :clanname is empty
@@ -82,27 +87,56 @@ func (c *WarDataController) GetWar() {
 
 // @Title Post
 // @Description get rep from callerbot
-// @Param	clanname		path 	string	true		"The key for clan"
-// @Success 200 {object} models.WarDataModel
-// @Failure 404  not found
+// @Param   body        body    models.GMrecModel   true        "The object content"
+// @Success 200 {object} models.GMrepModel
+// @Failure 403  body is empty
 // @router /bot [post]
 func (c *WarDataController) Bot() {
-
-	clanname := c.Ctx.Input.Params[":clanname"]
-	fmt.Printf("clanname:%s\n", clanname)
-	if clanname == "" {
-		c.Ctx.Output.SetStatus(403)
-		c.Data["json"] = string("is empty")
-	} else {
-		ob, err := models.GetWarData(clanname)
-		if err != nil {
-			c.Ctx.Output.SetStatus(404)
-			c.Data["json"] = err.Error()
-			fmt.Printf("err:%s\n", err.Error())
-		} else {
-			c.Data["json"] = ob
-			fmt.Printf("ob:%v\n", ob)
-		}
+	body := c.Ctx.Input.RequestBody
+	fmt.Printf("body:%s\n", body)
+	var rec models.GMrecModel
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &rec); err != nil {
+		fmt.Printf("err:%s\n", err.Error())
+		return
 	}
-	c.ServeJson()
+	fmt.Printf("rec:%v\n", rec)
+	if rec.Text == "" {
+		fmt.Printf("is empty\n")
+		return
+	}
+	if !strings.HasPrefix(rec.Text, "?") {
+		return
+	}
+	reptext, err := handler.HandlecocText(rec.Text)
+	rep := &models.GMrepModel{}
+	rep.Init()
+	if err != nil {
+		rep.SetText(err.Error())
+		fmt.Printf("err:%s\n", err.Error())
+	} else {
+		rep.SetText(reptext)
+		fmt.Printf("ob:%v\n", rep)
+	}
+	buff, err := json.Marshal(rep)
+	if err != nil {
+		fmt.Printf("err:%s\n", err.Error())
+		return
+	}
+	fmt.Println(string(buff))
+	httpPost(buff)
+	return
+}
+func httpPost(rep []byte) {
+	resp, err := http.Post("https://api.groupme.com/v3/bots/post",
+		"application/x-www-form-urlencoded",
+		bytes.NewReader(rep))
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(body))
 }

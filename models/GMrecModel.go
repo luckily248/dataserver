@@ -13,3 +13,18 @@
   "user_id": "1234567890"
 }**/
 package models
+
+type GMrecModel struct {
+	Attachments interface{}
+	Avatar_url  string
+	Created_at  int
+	Group_id    string
+	Id          string
+	Name        string
+	Sender_id   string
+	Sender_type string
+	Source_guid string
+	System      bool
+	Text        string
+	User_id     string
+}

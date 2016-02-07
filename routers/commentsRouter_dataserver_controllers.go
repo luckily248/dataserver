@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	
+
 	beego.GlobalControllerRouter["dataserver/controllers:CityContentController"] = append(beego.GlobalControllerRouter["dataserver/controllers:CityContentController"],
 		beego.ControllerComments{
 			"GetOneCityContent",
@@ -46,6 +46,13 @@ func init() {
 			"GetWar",
 			`/:clanname`,
 			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["dataserver/controllers:WarDataController"] = append(beego.GlobalControllerRouter["dataserver/controllers:WarDataController"],
+		beego.ControllerComments{
+			"Bot",
+			`/bot`,
+			[]string{"post"},
 			nil})
 
 }
