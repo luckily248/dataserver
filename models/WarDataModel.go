@@ -11,11 +11,32 @@ type WarDataModel struct {
 	Id        bson.ObjectId `bson:"_id" form:"-" `
 	TeamA     string        `form:"TeamA"`
 	TeamB     string        `form:"TeamB"`
-	battles   []Battle
+	Battles   map[string]Battle
+	IsEnable  bool
 	Timestamp time.Time
 }
 type Battle struct {
-	No int
+	Scoutstate string //noscout needscout scouted
+	Callers    []Caller
+}
+
+func (this *Battle) Init() {
+	this.Scoutstate = "noscout"
+	this.Callers = make([]Caller, 0)
+	return
+}
+func (this *Battle) Needscout() {
+	this.Scoutstate = "needscout"
+	return
+}
+func (this *Battle) Scouted() {
+	this.Scoutstate = "scouted"
+	return
+}
+
+type Caller struct {
+	Callername string
+	Calledtime time.Time
 }
 
 func (this *WarDataModel) Tablename() string {
@@ -31,6 +52,7 @@ func (this *WarDataModel) init() (err error) {
 	this.Id = bson.NewObjectId()
 	this.TeamA = "teamA"
 	this.TeamB = "teamB"
+	this.IsEnable = true
 	this.Timestamp = time.Now()
 	return
 }
