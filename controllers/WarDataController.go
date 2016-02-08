@@ -107,7 +107,7 @@ func (c *WarDataController) Bot() {
 	if !strings.HasPrefix(rec.Text, "?") {
 		return
 	}
-	reptext, err := handler.HandlecocText(rec.Text)
+	reptext, err := handler.HandlecocText(rec)
 	rep := &models.GMrepModel{}
 	rep.Init()
 	if err != nil {
