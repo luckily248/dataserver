@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/astaxie/beego"
 )
@@ -44,7 +45,7 @@ func (c *WarDataController) NewWar() {
 		c.Ctx.Output.SetStatus(404)
 		c.Data["json"] = string("someteam empty")
 	} else {
-		id, err := models.AddWarData(wardata.TeamA, wardata.TeamB)
+		id, err := models.AddWarData(wardata.TeamA, wardata.TeamB, 25)
 		if err != nil {
 			c.Ctx.Output.SetStatus(404)
 			c.Data["json"] = err.Error()
@@ -72,7 +73,7 @@ func (c *WarDataController) GetWar() {
 		c.Ctx.Output.SetStatus(403)
 		c.Data["json"] = string("is empty")
 	} else {
-		ob, err := models.GetWarData(clanname)
+		ob, err := models.GetWarDatabyclanname(clanname)
 		if err != nil {
 			c.Ctx.Output.SetStatus(404)
 			c.Data["json"] = err.Error()
@@ -104,10 +105,11 @@ func (c *WarDataController) Bot() {
 		fmt.Printf("is empty\n")
 		return
 	}
-	if !strings.HasPrefix(rec.Text, "?") {
+	if !strings.HasPrefix(rec.Text, "!") {
 		return
 	}
 	reptext, err := handler.HandlecocText(rec)
+	fmt.Printf("reptextlen:%d\n", utf8.RuneCountInString(reptext))
 	rep := &models.GMrepModel{}
 	rep.Init()
 	if err != nil {

@@ -3,6 +3,7 @@
 
 ##数据服务器配置
 
+Use bee run -downdoc=true -gendoc=true to run your API application and rebuild document automatically.
 2. MongoDB环境配置
 	1. 下载对应系统版本 已下载windows版本32位 64位安装包 注意版本风险
 	2. 添加环境变量 

@@ -8,12 +8,13 @@ import (
 
 type WarDataModel struct {
 	BaseDBmodel
-	Id        bson.ObjectId `bson:"_id" form:"-" `
-	TeamA     string        `form:"TeamA"`
-	TeamB     string        `form:"TeamB"`
-	Battles   map[string]Battle
+	Id        int    `bson:"_id" form:"-" `
+	TeamA     string `form:"TeamA"`
+	TeamB     string `form:"TeamB"`
+	Battles   []Battle
 	IsEnable  bool
 	Timestamp time.Time
+	Begintime time.Time
 }
 type Battle struct {
 	Scoutstate string //noscout needscout scouted
@@ -36,7 +37,32 @@ func (this *Battle) Scouted() {
 
 type Caller struct {
 	Callername string
+	Starstate  int
 	Calledtime time.Time
+}
+
+func (this *Caller) Init() {
+	this.Callername = ""
+	this.Starstate = -1
+	this.Calledtime = time.Now()
+	return
+}
+func (this *Caller) GetStarstate() string {
+	switch this.Starstate {
+	case -1:
+		return "ZZZ"
+	case 0:
+		return "XXX"
+	case 1:
+		return "OXX"
+	case 2:
+		return "OOX"
+	case 3:
+		return "OOO"
+
+	}
+	return "ZZZ"
+
 }
 
 func (this *WarDataModel) Tablename() string {
@@ -49,54 +75,77 @@ func (this *WarDataModel) init() (err error) {
 		return
 	}
 	this.c = this.db.C(this.Tablename())
-	this.Id = bson.NewObjectId()
 	this.TeamA = "teamA"
 	this.TeamB = "teamB"
 	this.IsEnable = true
 	this.Timestamp = time.Now()
 	return
 }
-func (this *WarDataModel) GetWarId() string {
-	return this.Id.Hex()
 
-}
-func (this *WarDataModel) SetWarId(id string) {
-	this.Id = bson.ObjectIdHex(id)
-}
-func AddWarData(teama string, teamb string) (id string, err error) {
+func AddWarData(teama string, teamb string, cout int) (id int, err error) {
 	wardata := &WarDataModel{}
 	err = wardata.init()
 	if err != nil {
 		return
 	}
 	defer wardata.session.Close()
+	id, err = GetNextWarId()
+	if err != nil {
+		return
+	}
+	wardata.Id = id
 	wardata.TeamA = teama
 	wardata.TeamB = teamb
-	id = wardata.GetWarId()
+	wardata.Begintime = time.Now().Add(23 * time.Hour)
+	wardata.Battles = make([]Battle, cout)
+	battlep := &Battle{}
+	battlep.Init()
+	for index := range wardata.Battles {
+		wardata.Battles[index] = *battlep
+	}
 	err = wardata.c.Insert(wardata)
 	return
 }
 
-func GetWarData(clanname string) (content *WarDataModel, err error) {
+func GetWarData(warid int) (content *WarDataModel, err error) {
 	wardata := &WarDataModel{}
 	err = wardata.init()
 	if err != nil {
 		return
 	}
 	defer wardata.session.Close()
-	wardata.TeamA = clanname
-	err = wardata.c.Find(bson.M{"teama": wardata.TeamA}).Sort("-timestamp").One(&content)
+	//err = wardata.c.Find(bson.M{"teama": wardata.TeamA}).Sort("-timestamp").One(&content)
+	err = wardata.c.FindId(warid).One(&content)
+	return
+}
+func GetWarDatabyclanname(clanname string) (content *WarDataModel, err error) {
+	wardata := &WarDataModel{}
+	err = wardata.init()
+	if err != nil {
+		return
+	}
+	defer wardata.session.Close()
+	err = wardata.c.Find(bson.M{"teama": clanname}).Sort("-timestamp").One(&content)
+	return
+}
+func DelWarDatabyWarid(warid int) (err error) {
+	wardata := &WarDataModel{}
+	err = wardata.init()
+	if err != nil {
+		return
+	}
+	defer wardata.session.Close()
+	err = wardata.c.RemoveId(warid)
 	return
 }
 
-func UpdateWarData(warid string, updata interface{}) (err error) {
+func UpdateWarData(warid int, updata interface{}) (err error) {
 	wardata := &WarDataModel{}
 	err = wardata.init()
 	if err != nil {
 		return
 	}
 	defer wardata.session.Close()
-	wardata.SetWarId(warid)
-	err = wardata.c.UpdateId(wardata.Id, updata)
+	err = wardata.c.UpdateId(warid, updata)
 	return
 }
